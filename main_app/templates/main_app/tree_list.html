@@ -1,0 +1,12 @@
+{% extends 'main_app/base.html' %}
+
+{% block title %}Tree List{% endblock %}
+
+{% block content %}
+<h2>All Trees</h2>
+<ul>
+    {% for tree in trees %}
+        <li><a href="/tree/{{ tree.id }}/">{{ tree.tree_name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

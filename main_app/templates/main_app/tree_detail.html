@@ -1,0 +1,20 @@
+{% extends 'main_app/base.html' %}
+
+{% block title %}{{ tree.tree_name }}{% endblock %}
+
+{% block content %}
+<h2>{{ tree.tree_name }}</h2>
+<h3>Letters</h3>
+<ul>
+    {% for letter in letters %}
+        <li><strong>{{ letter.author_name }}:</strong> {{ letter.content }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Ornaments</h3>
+<ul>
+    {% for ornament in ornaments %}
+        <li>Position: ({{ ornament.position_x }}, {{ ornament.position_y }})</li>
+    {% endfor %}
+</ul>
+{% endblock %}

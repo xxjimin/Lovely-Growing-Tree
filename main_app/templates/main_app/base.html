@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Lovely Growing Tree{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'main_app/css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Lovely Growing Tree Test</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/signup/">Sign Up</a>
+            <a href="/login/">Login</a>
+            <a href="/trees/">Trees</a>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        
+        <!-- 페이지별 내용이 여기에 들어갑니다 -->
+        {% endblock %}
+    </main>
+
+
+
+    <footer>
+        <p>&copy; 2024 Lovely Growing Tree</p>
+    </footer>
+</body>
+</html>
