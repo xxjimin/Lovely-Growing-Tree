@@ -1,0 +1,15 @@
+<h1>Your Trees</h1>
+<ul>
+  {% for tree in trees %}
+    <li>{{ tree.tree_name }}
+      <a href="{% url 'add_letter' tree.id %}">Add Letter</a>
+    </li>
+  {% endfor %}
+</ul>
+
+<h1>Your Ornaments</h1>
+<ul>
+  {% for ornament in ornaments %}
+    <li>Letter: {{ ornament.letter.content }} at position ({{ ornament.position_x }}, {{ ornament.position_y }})</li>
+  {% endfor %}
+</ul>
