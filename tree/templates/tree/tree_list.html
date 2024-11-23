@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree List</title>
+</head>
+<body>
+    <h1>트리 목록</h1>
+    <ul>
+        {% for tree in trees %}
+            <li>{{ tree.tree_name }}</li>
+        {% empty %}
+            <li>트리가 없습니다.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

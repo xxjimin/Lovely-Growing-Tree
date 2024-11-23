@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tree Detail</title>
+</head>
+<body>
+    <h1>Tree: {{ tree.tree_name }}</h1>
+
+    <h2>Letters</h2>
+    {% if letters %}
+        <ul>
+            {% for letter in letters %}
+                <li>
+                    <strong>From:</strong> {{ letter.author_name }}<br>
+                    <strong>Message:</strong> {{ letter.content }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No letters yet.</p>
+    {% endif %}
+
+    <h2>Write a Letter</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="author_name">Your Name:</label><br>
+        <input type="text" id="author_name" name="author_name" required><br>
+
+        <label for="content">Your Letter:</label><br>
+        <textarea id="content" name="content" rows="4" required></textarea><br>
+
+        <button type="submit">Send Letter</button>
+    </form>
+
+    <br>
+    <a href="{% url 'tree_list' %}">Back to Tree List</a>
+</body>
+</html>

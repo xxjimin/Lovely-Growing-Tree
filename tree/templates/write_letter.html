@@ -1,0 +1,17 @@
+<!-- write_letter.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>편지 쓰기</title>
+</head>
+<body>
+    <h1>{{ tree.tree_name }} 트리에게 편지 쓰기</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <textarea name="content" placeholder="편지를 작성하세요..." required></textarea>
+        <button type="submit">편지 보내기</button>
+    </form>
+</body>
+</html>
