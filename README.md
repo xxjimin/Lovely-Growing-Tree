@@ -49,6 +49,9 @@ Ornaments on the tree can be clicked to reveal letter details in a modal.
 Access Control:
 
 Users can only view and manage their own trees. Letters on other users' trees are restricted.
+
+
+
 🌐 Key Technologies
 Backend: Python, Django, MySQL
 Frontend: HTML, CSS, JavaScript
