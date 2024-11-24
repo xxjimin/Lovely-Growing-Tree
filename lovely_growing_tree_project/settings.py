@@ -64,7 +64,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'lovely_growing_tree',  # MySQL 데이터베이스 이름
         'USER': 'root',  # MySQL 사용자명
-        'PASSWORD': '1234',  # MySQL 비밀번호
+        'PASSWORD': 'rla981226',  # MySQL 비밀번호
         'HOST': 'localhost',  # MySQL 호스트 (로컬 서버)
         'PORT': '3306',  # MySQL 포트 (기본 포트)
     }
@@ -98,3 +98,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# 정적 파일들이 위치한 디렉토리 목록
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'tree', 'static'),  # tree 앱의 static 디렉토리 경로
+]
+
+# collectstatic 명령어를 사용할 때 모든 정적 파일이 모이는 경로
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

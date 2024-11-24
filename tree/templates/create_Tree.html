@@ -1,15 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-    <title>Create Tree</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Tree</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        body, h1, form, input, button, label {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 전체 배경 설정 */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #00142a, #01203e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 50px;
+        }
+
+        /* 제목 스타일 */
+        h1 {
+            margin-top: 10px;
+            font-size: 2.5rem;
+            margin: 0;
+            padding: 25px 0;
+            color: #4caf50;
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            background-color: #720000;
+            z-index: 10;
+        }
+
+        /* 폼 컨테이너 스타일 */
+        .form-container {
+            margin-top: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #001d3d;
+            color: white;
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4caf50;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* 크리스마스 배경 요소 */
+        .tree-icon {
+            margin-top: 20px;
+        }
+
+        .tree-icon img {
+            width: 50px;
+            height: 50px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Create Your Tree</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <label>Tree Name:</label>
-        <input type="text" name="tree_name" required>
-        <button type="submit">Create</button>
-    </form>
+    <!-- 제목 -->
+    <h1>Create Your Tree 🎄</h1>
+
+    <!-- 폼 컨테이너 -->
+    <div class="form-container">
+        <form method="POST">
+            {% csrf_token %}
+            <label for="tree_name">Tree Name:</label>
+            <input type="text" name="tree_name" id="tree_name" required>
+            <button type="submit">Create</button>
+        </form>
+       
+    </div>
 </body>
 </html>
