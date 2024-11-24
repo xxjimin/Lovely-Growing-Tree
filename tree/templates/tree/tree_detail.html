@@ -1,10 +1,75 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>{{ tree.tree_name }}</title>
+    <style>
+        #tree-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            background-image: url('{{ tree_image_url }}'); /* 동적으로 URL을 삽입 */
+            background-size: cover;
+            margin: 20px auto;
+        }
+        .ornament {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .modal.active {
+            display: block;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .modal-overlay.active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <h1>Tree: {{ tree.tree_name }}</h1>
+    
+    <div id="tree-container">
+        <!-- 트리 이미지 위에 * 마커 표시 -->
+        {% for ornament in ornaments %}
+            <div class="ornament" style="top: {{ ornament.position_y }}px; left: {{ ornament.position_x }}px;" 
+                data-author="{{ ornament.letter.author_name }}" 
+                data-content="{{ ornament.letter.content }}"></div>
+        {% endfor %}
+    </div>
+
+    <div id="modal-overlay" class="modal-overlay"></div>
+    <div id="modal" class="modal">
+        <h2>Letter Details</h2>
+        <p><strong>Author:</strong> <span id="modal-author"></span></p>
+        <p><strong>Content:</strong></p>
+        <p id="modal-content"></p>
+        <button onclick="closeModal()">Close</button>
+    </div>
 
     {% if restricted %}
         <p>You are not authorized to view the letters for this tree.</p>
@@ -32,5 +97,33 @@
     </form>
 
     <p><a href="{% url 'home' %}">Go Back to Home</a></p>
+
+    <script>
+        const ornaments = document.querySelectorAll('.ornament');
+        const modal = document.getElementById('modal');
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalAuthor = document.getElementById('modal-author');
+        const modalContent = document.getElementById('modal-content');
+
+        ornaments.forEach(ornament => {
+            ornament.addEventListener('click', () => {
+                const author = ornament.getAttribute('data-author');
+                const content = ornament.getAttribute('data-content');
+                
+                modalAuthor.textContent = author;
+                modalContent.textContent = content;
+
+                modal.classList.add('active');
+                modalOverlay.classList.add('active');
+            });
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+            modalOverlay.classList.remove('active');
+        }
+
+        modalOverlay.addEventListener('click', closeModal);
+    </script>
 </body>
-</html>
+</html> 
