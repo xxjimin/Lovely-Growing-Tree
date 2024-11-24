@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tree</title>
+</head>
+<body>
+    <h1>My Tree: {{ tree.tree_name }}</h1>
+
+    <h2>Letters:</h2>
+    <ul>
+        {% for letter in letters %}
+            <li>
+                <strong>Author:</strong> {{ letter.author_name }}<br>
+                <strong>Content:</strong> {{ letter.content }}
+            </li>
+        {% empty %}
+            <li>No letters yet.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'home' %}">Back to Home</a>
+</body>
+</html>

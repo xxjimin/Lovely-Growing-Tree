@@ -1,55 +1,31 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import User, Tree
-from django.contrib import messages
-
-def register(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
-        
-        # User 모델에 사용자 등록
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already exists.")
-            return redirect('register')
-        
-        user = User.objects.create(username=username, password=password)
-        # 트리 생성 페이지로 리다이렉트
-        return redirect('create_tree', user_id=user.user_id)
-    
-    return render(request, "register.html")
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import User, Tree
-from django.contrib import messages
-
-# views.py
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import User, Tree
+from .models import User, Tree, Letter
 
-# views.py
-
+# 홈 페이지 - 회원가입 및 검색
 def home(request):
     if request.method == "POST":
         if request.POST.get('type') == 'register':
             username = request.POST["username"]
             password = request.POST["password"]
             
+            # 사용자 중복 확인
             if User.objects.filter(username=username).exists():
                 messages.error(request, "Username already exists.")
                 return redirect('home')
             
+            # 사용자 등록 및 세션에 사용자 ID 저장
             user = User.objects.create(username=username, password=password)
+            request.session["user_id"] = user.user_id
             messages.success(request, "User registered successfully!")
             return redirect('create_tree', user_id=user.user_id)
 
         elif request.POST.get('type') == 'search':
             search_username = request.POST["search_username"]
             try:
+                # 사용자 및 트리 조회
                 user = User.objects.get(username=search_username)
-                tree = Tree.objects.get(user=user)  # User 객체로 Tree를 조회
+                tree = Tree.objects.get(user=user)
                 return redirect('tree_detail', tree_id=tree.tree_id)
             except User.DoesNotExist:
                 messages.error(request, "User not found.")
@@ -61,77 +37,68 @@ def home(request):
     return render(request, "home.html")
 
 
-
-# Other views (register, create_tree) remain the same
-
-from django.shortcuts import render, redirect
-from .models import User, Tree
-from django.contrib import messages
-
+# 트리 목록 보기
 def tree_list(request):
-    # This is just an example; you can modify it as needed
     trees = Tree.objects.all()
     return render(request, 'tree/tree_list.html', {'trees': trees})
 
-# Other views (register, create_tree) remain the same
 
+# 트리 생성 페이지
 def create_tree(request, user_id):
     if request.method == "POST":
         tree_name = request.POST["tree_name"]
         user = User.objects.get(user_id=user_id)
         
-        # Tree 모델에 트리 생성
+        # 트리 생성
         Tree.objects.create(tree_name=tree_name, user=user)
         messages.success(request, "Tree created successfully!")
         return redirect("tree_list")
     
     return render(request, "create_tree.html")
 
-# views.py
 
-from django.shortcuts import render, redirect
-from .models import User, Tree, Letter
-from django.contrib import messages
-
-def write_letter(request, tree_id):
-    tree = Tree.objects.get(tree_id=tree_id)
-    if request.method == "POST":
-        content = request.POST["content"]
-        author = User.objects.get(user_id=request.session["user_id"])  # 세션에서 로그인된 사용자 가져오기
-        
-        # 편지 작성
-        Letter.objects.create(content=content, author=author, tree=tree)
-        messages.success(request, "편지가 성공적으로 작성되었습니다.")
-        return redirect("tree_detail", tree_id=tree_id)  # 작성 후 트리 상세 페이지로 리다이렉트
-
-    return render(request, "write_letter.html", {"tree": tree})
-
-# views.py
-
-from .models import User, Tree, Letter  # Letter 모델도 임포트
-
+# 트리 상세 보기 및 편지 작성
 def tree_detail(request, tree_id):
     tree = Tree.objects.get(tree_id=tree_id)
     letters = Letter.objects.filter(tree=tree)
 
     if request.method == "POST":
-        author = request.POST.get("author")
+        author_name = request.POST.get("author_name")
         content = request.POST.get("content")
 
-        if not author or not content:
-            messages.error(request, "Author and content cannot be empty.")
+        if not author_name or not content:
+            messages.error(request, "Author name and content cannot be empty.")
             return redirect('tree_detail', tree_id=tree_id)
 
-        # Letter 생성
+        # 편지 생성
         Letter.objects.create(tree=tree, author_name=author_name, content=content)
-
         messages.success(request, "Letter added successfully!")
         return redirect('tree_detail', tree_id=tree_id)
 
     return render(request, "tree/tree_detail.html", {'tree': tree, 'letters': letters})
 
 
-# register 뷰에서 로그인 처리
+# 편지 작성 페이지
+def write_letter(request, tree_id):
+    tree = Tree.objects.get(tree_id=tree_id)
+    
+    if request.method == "POST":
+        content = request.POST["content"]
+        author_name = request.POST["author_name"]  # author_name을 폼에서 받기
+        
+        if not content or not author_name:
+            messages.error(request, "Content and author name cannot be empty.")
+            return redirect('write_letter', tree_id=tree_id)
+        
+        # 편지 작성
+        Letter.objects.create(content=content, author_name=author_name, tree=tree)
+        messages.success(request, "편지가 성공적으로 작성되었습니다.")
+        return redirect("tree_detail", tree_id=tree_id)
+
+    return render(request, "write_letter.html", {"tree": tree})
+
+
+# 회원가입 페이지
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -146,8 +113,7 @@ def register(request):
         # 세션에 사용자 ID 저장
         request.session["user_id"] = user.user_id
 
+        messages.success(request, "User registered successfully!")
         return redirect('create_tree', user_id=user.user_id)
 
     return render(request, "register.html")
-
-

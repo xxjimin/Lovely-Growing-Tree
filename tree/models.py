@@ -21,14 +21,15 @@ class Tree(models.Model):
 
 
 class Letter(models.Model):
-    letter_id = models.AutoField(primary_key=True)
+    letter_id = models.AutoField(primary_key=True)  # letter_id 필드를 명시적으로 지정
     content = models.TextField()
-    author_name = models.ForeignKey(User, on_delete=models.CASCADE)  # 편지를 쓴 사용자
-    tree = models.ForeignKey(Tree, on_delete=models.CASCADE)    # 해당 트리
+    author_name = models.CharField(max_length=50)
+    tree = models.ForeignKey(Tree, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Letter from {self.author.username} to {self.tree.tree_name}"
+        return self.author_name
+
 
 
 class Ornament(models.Model):
