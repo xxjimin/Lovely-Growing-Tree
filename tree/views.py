@@ -23,6 +23,7 @@ def home(request):
             # 사용자 등록 및 세션에 사용자 ID 저장
             user = User.objects.create(username=username, password=password)
             request.session["user_id"] = user.user_id
+            request.session["username"] = user.username  # 세션에 username 저장
             messages.success(request, "User registered successfully!")
             return redirect('create_tree', user_id=user.user_id)
 
@@ -50,11 +51,12 @@ def home(request):
         except Tree.DoesNotExist:
             pass
 
-    return render(request, "home.html")
+    # 세션에서 username을 가져와서 템플릿에 전달
+    username = request.session.get("username", None)
+
+    return render(request, "home.html", {"username": username})
 
 
-# 로그인 페이지
-# 로그인 페이지
 def login(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -79,6 +81,7 @@ def login(request):
             return redirect('create_tree', user_id=user.user_id)
 
     return render(request, "login.html")
+
 
 
 

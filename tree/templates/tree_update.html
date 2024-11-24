@@ -1,0 +1,22 @@
+<!-- tree_update.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>트리 수정</title>
+</head>
+<body>
+    <h1>트리 이름 수정</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="tree_name">새로운 트리 이름:</label>
+        <input type="text" name="tree_name" id="tree_name" value="{{ tree.tree_name }}">
+        <button type="submit">수정 완료</button>
+    </form>
+
+    <p><a href="{% url 'tree_detail' tree_id=tree.tree_id %}">뒤로 가기</a></p>
+
+</body>
+</html>

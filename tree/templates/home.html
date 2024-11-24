@@ -3,56 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>홈 페이지</title>
+    <title>Lovely Growing Tree</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        body, h1, h2, form, input, button, a {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 전체 배경 설정 */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #00142a, #01203e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 30px;
+        }
+
+        /* 제목 스타일 */
+        h1 {
+            margin-top: 5px;
+            font-size: 2.8rem;
+            margin: 0;
+            padding: 25px 0;
+            color: #4caf50;
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            background-color: #9c0303;
+            z-index: 10;
+        }
+
+        /* 섹션 스타일 */
+        .form-container, .logout-section {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            margin-top: 250px;
+        }
+
+        .form-section, .logout-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #001d3d;
+            color: white;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4caf50;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            display: block;
+            margin-top: 10px;
+            color: #4caf50;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* 사용자 검색 섹션 스타일 */
+        .search-section {
+            margin-top: 30px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .search-section input {
+            width: 300px;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            background: #001d3d;
+            color: white;
+            display: inline-block;
+        }
+
+        .search-section button {
+            width: 100px;
+            padding: 10px;
+            font-size: 1rem;
+            background-color: #a30303;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-section button:hover {
+            background-color: #960202;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Tree App!</h1>
+    <!-- 제목 -->
+    <h1>Welcome to Lovely Growing Tree 🎄</h1>
 
     {% if request.session.user_id %}
         <!-- 로그인한 사용자에게 환영 메시지 표시 -->
-        <h2>{{ request.session.username }}님, 환영합니다!</h2>
-
-        <!-- 나의 트리 보러가기 버튼 -->
-        <h3><a href="{% url 'tree_detail' tree_id=request.session.tree_id %}">나의 트리 보러가기</a></h3>
-
-        <!-- 로그아웃 폼 -->
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
+        <div class="logout-section">
+            <h2>{{ request.session.username }}님, 환영합니다!</h2>
+            <a href="{% url 'tree_detail' tree_id=request.session.tree_id %}">나의 트리 보러가기</a>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        </div>
     {% else %}
-        <!-- 로그인 폼 -->
-        <h2>Login</h2>
-        <form action="{% url 'login' %}" method="post">
-            {% csrf_token %}
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" required>
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
-            <button type="submit">Login</button>
-        </form>
+        <div class="form-container">
+            <!-- 로그인 섹션 -->
+            <div class="form-section">
+                <h2>Login</h2>
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" id="username" required>
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password" required>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
 
-        <!-- 회원가입 폼 -->
-        <h2>Register</h2>
-        <form action="{% url 'home' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="type" value="register">
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" required>
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
-            <button type="submit">Register</button>
-        </form>
+            <!-- 회원가입 섹션 -->
+            <div class="form-section">
+                <h2>Register</h2>
+                <form action="{% url 'home' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="type" value="register">
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" id="username" required>
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password" required>
+                    <button type="submit">Register</button>
+                </form>
+            </div>
+        </div>
     {% endif %}
 
-    <!-- 사용자 검색 폼 (로그인 여부와 관계없이 항상 표시) -->
-    <h2>Search User</h2>
-    <form action="{% url 'home' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="type" value="search">
-        <label for="search_username">Username:</label>
-        <input type="text" name="search_username" id="search_username" required>
-        <button type="submit">Search</button>
-    </form>
+    <!-- 사용자 검색 섹션 -->
+    <div class="search-section">
+        <form action="{% url 'home' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="type" value="search">
+            <input type="text" name="search_username" placeholder="Search User" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
 </body>
 </html>

@@ -1,40 +1,162 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ tree.tree_name }}</title>
     <style>
+        /* 초기화 */
+        body, h1, h2, h3, form, input, button, a, p, ul, li {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 전체 배경 설정 */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #00142a, #01203e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #4caf50;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 20px;
+            color: #4caf50;
+        }
+
         #tree-container {
             position: relative;
             width: 500px;
             height: 500px;
-            background-image: url('{{ tree_image_url }}'); /* 동적으로 URL을 삽입 */
+            background-image: url('{{ tree_image_url }}');
             background-size: cover;
+            background-position: center;
             margin: 20px auto;
+            border: 2px solid #4caf50;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
+
         .ornament {
             position: absolute;
             width: 20px;
             height: 20px;
-            background-color: red;
+            background-color: #ff5722; /* 주황색 */
+            border: 2px solid #fff;
             border-radius: 50%;
             cursor: pointer;
+            transition: transform 0.3s ease;
         }
+
+        .ornament:hover {
+            transform: scale(1.2);
+            background-color: #ff7043;
+        }
+
+        ul {
+            list-style: none;
+            margin: 20px 0;
+            padding: 0;
+        }
+
+        li {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        form {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        form input, form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: #001d3d;
+            color: white;
+            font-size: 1rem;
+        }
+
+        form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4caf50;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #4caf50;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
         .modal {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: white;
-            border: 1px solid #ccc;
+            background-color: #fff;
+            color: #000;
             padding: 20px;
+            border-radius: 8px;
             z-index: 1000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            width: 400px;
+            max-width: 90%;
+            text-align: center;
         }
+
         .modal.active {
             display: block;
         }
+
         .modal-overlay {
             display: none;
             position: fixed;
@@ -45,21 +167,32 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 999;
         }
+
         .modal-overlay.active {
             display: block;
+        }
+
+        .modal button {
+            padding: 10px 20px;
+            background-color: #9c0303;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .modal button:hover {
+            background-color: #c01010;
         }
     </style>
 </head>
 <body>
-    
-
     {% if restricted %}
         <p>You are not authorized to view the letters for this tree.</p>
     {% else %}
-        <h1>Tree: {{ tree.tree_name }}</h1>
-        
+        <h1>{{ tree.tree_name }}</h1>
         <div id="tree-container">
-            <!-- 트리 이미지 위에 * 마커 표시 -->
             {% for ornament in ornaments %}
                 <div class="ornament" style="top: {{ ornament.position_y }}px; left: {{ ornament.position_x }}px;" 
                     data-author="{{ ornament.letter.author_name }}" 
@@ -75,12 +208,11 @@
             <p id="modal-content"></p>
             <button onclick="closeModal()">Close</button>
         </div>
+
         <h2>Letters</h2>
         <ul>
             {% for letter in letters %}
-                <li>
-                    <strong>{{ letter.author_name }}</strong>: {{ letter.content }}
-                </li>
+                <li><strong>{{ letter.author_name }}</strong>: {{ letter.content }}</li>
             {% endfor %}
         </ul>
     {% endif %}
@@ -90,14 +222,12 @@
         {% csrf_token %}
         <label for="author_name">Your Name:</label>
         <input type="text" name="author_name" id="author_name" required>
-        <br>
         <label for="content">Content:</label>
         <textarea name="content" id="content" required></textarea>
-        <br>
         <button type="submit">Submit Letter</button>
     </form>
 
-    <p><a href="{% url 'home' %}">Go Back to Home</a></p>
+    <a href="{% url 'home' %}">Go Back to Home</a>
 
     <script>
         const ornaments = document.querySelectorAll('.ornament');
@@ -127,4 +257,4 @@
         modalOverlay.addEventListener('click', closeModal);
     </script>
 </body>
-</html> 
+</html>
