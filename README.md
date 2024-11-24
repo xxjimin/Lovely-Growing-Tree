@@ -1,33 +1,89 @@
-<p align="center"> </p> <h1 align="center">Lovely Growing Tree 🌳</h1> <p align="center"> 🌟 A delightful project where users grow and decorate their unique trees with heartfelt letters. 🌟 </p>
-🌟 Introduction
-Lovely Growing Tree is a web-based platform that allows users to:
+# Lovely Growing Tree 🌳
+**A project by Kim Jimin and Oh Kyung-rin from Sookmyung Women's University, IT Engineering Department**
 
-Register and create their personalized tree 🌲.
-Write letters to their tree or others’ trees as ornaments 🎀.
-View and interact with ornaments on their tree.
-Built with Python (Django) and MySQL, this project emphasizes interactive features, real-time data management, and a visually engaging user experience.
+Lovely Growing Tree is a web-based platform where users can create their own unique tree, write heartfelt letters, and decorate their tree with ornaments. Built with Python (Django) and MySQL, this project emphasizes interactivity and provides a visually appealing user experience.
 
-📸 Screenshots
-Home Page
-<p align="center"> <img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/a60ed576-3900-4dd6-894a-702d683d0af1/67dd0440-3028-49da-ba36-f633cb2b798c/image.png" width="80%" alt="Home Page" /> </p>
-Writing a Letter
-<p align="center"> <img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/a60ed576-3900-4dd6-894a-702d683d0af1/243f9344-9f3e-479a-8994-1069c8afe7f7/image.png" width="80%" alt="Writing a Letter" /> </p>
-Ornament Display
-<p align="center"> <img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/a60ed576-3900-4dd6-894a-702d683d0af1/4c794a76-3bde-4dc5-8483-de606a2226f5/image.png" width="80%" alt="Tree with Ornaments" /> </p>
-🔧 Features
-🌲 User Management
-Register: Create a unique account to start your tree journey.
-Login: Securely access your personalized tree.
-Search Users: Find and explore other users’ trees.
-✉️ Letters and Ornaments
-Write heartfelt letters to your tree or others’ trees.
-Letters are displayed as red ornaments on the tree.
-Click on an ornament to read the attached letter.
-🖼️ Visual Interaction
-Each tree features a beautiful visual layout with randomly positioned ornaments for dynamic interaction.
-🚀 Getting Started
-Prerequisites
-Python 3.8+
-Django 4.2
-MySQL 8.0+
-Node.js (for frontend enhancements, optional)
+---
+
+## 🌟 Key Features
+
+### 🌲 User Management
+- **Register and Login**: Create an account and access your personalized tree.
+- **User Search**: Search for other users' trees to interact with them.
+
+### ✉️ Letters and Ornaments
+- **Write Letters**: Write heartfelt messages on your own or others' trees.
+- **Tree Decorations**: Letters appear as red ornaments on the tree with random positioning.
+- **View Ornaments**: Click on an ornament to read the attached letter, including the author and content.
+
+### 🖼️ Visual Design
+- Each tree features a unique visual layout with randomly placed ornaments.
+- A modal popup displays letter details, enhancing the interactive experience.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- **Python 3.8+**
+- **Django 4.2**
+- **MySQL 8.0+**
+
+---
+
+
+markdown
+코드 복사
+# Lovely Growing Tree 🌳
+
+Lovely Growing Tree is a web-based platform where users can create their own unique tree, write heartfelt letters, and decorate their tree with ornaments. Built with Python (Django) and MySQL, this project emphasizes interactivity and provides a visually appealing user experience.
+
+---
+
+## 🌟 Key Features
+
+### 🌲 User Management
+- **Register and Login**: Create an account and access your personalized tree.
+- **User Search**: Search for other users' trees to interact with them.
+
+### ✉️ Letters and Ornaments
+- **Write Letters**: Write heartfelt messages on your own or others' trees.
+- **Tree Decorations**: Letters appear as red ornaments on the tree with random positioning.
+- **View Ornaments**: Click on an ornament to read the attached letter, including the author and content.
+
+### 🖼️ Visual Design
+- Each tree features a unique visual layout with randomly placed ornaments.
+- A modal popup displays letter details, enhancing the interactive experience.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- **Python 3.8+**
+- **Django 4.2**
+- **MySQL 8.0+**
+
+---
+
+
+🛠️ How It Works
+User Registration and Login:
+
+Users register by providing a unique username and password.
+After logging in, they can view and manage their tree.
+Tree Creation and Interaction:
+
+Users create a personalized tree with a unique name.
+Letters can be added to trees, appearing as ornaments with random placement.
+Ornaments and Letter Details:
+
+Ornaments on the tree can be clicked to reveal letter details in a modal.
+Access Control:
+
+Users can only view and manage their own trees. Letters on other users' trees are restricted.
+🌐 Key Technologies
+Backend: Python, Django, MySQL
+Frontend: HTML, CSS, JavaScript
+Database: MySQL
+
