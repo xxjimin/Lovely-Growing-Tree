@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas Tree</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Christmas Tree 🎄</h1>
+        <button id="create-tree-button">Create Your Tree</button>
+    </header>
+        <!-- Signup 모달 -->
+    <div id="signup-modal" class="signup-modal">
+        <div class="signup-modal-content">
+            <span id="close-signup-modal" class="signup-close">&times;</span>
+            <h2>Create Your Tree</h2>
+            <form id="signup-form">
+                <input type="text" id="username" placeholder="Enter Username" required />
+                <input type="password" id="password" placeholder="Enter Password" required />
+                <button type="submit">Create Tree</button>
+            </form>
+        </div>
+    </div>
+    <main>  
+
+        
+        <section id="village">
+            <div id="snow"></div> <!-- 눈 내리는 효과 -->
+            <div id="tree-container">
+                <img src="images/tree.png" alt="Christmas Tree" id="tree"> <!-- 트리 이미지 -->
+            </div>
+            
+        </section>
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span id="close-modal" class="close">&times;</span>
+                <h2>🎄 Ornament Message 🎄</h2>
+                <p id="modal-message"></p>
+                <p id="modal-author"></p>
+            </div>
+        </div>
+        
+        <section id="add-letter">
+            <h2>Send a Letter to the Tree</h2>
+            <form id="letter-form">
+                <input type="text" id="recipient-username" placeholder="Recipient Username" required />
+                <textarea id="letter-content" placeholder="Write your message here..." required></textarea>
+                <input type="text" id="author-name" placeholder="Written by" required />
+                <button type="submit">Add Ornament</button>
+            </form>
+        </section>
+        
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Lovely Growing Tree</p>
+    </footer>
+
+    <script src="js/scripts.js"></script>
+</body>
+</html>
