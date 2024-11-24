@@ -51,29 +51,30 @@
     </style>
 </head>
 <body>
-    <h1>Tree: {{ tree.tree_name }}</h1>
     
-    <div id="tree-container">
-        <!-- 트리 이미지 위에 * 마커 표시 -->
-        {% for ornament in ornaments %}
-            <div class="ornament" style="top: {{ ornament.position_y }}px; left: {{ ornament.position_x }}px;" 
-                data-author="{{ ornament.letter.author_name }}" 
-                data-content="{{ ornament.letter.content }}"></div>
-        {% endfor %}
-    </div>
-
-    <div id="modal-overlay" class="modal-overlay"></div>
-    <div id="modal" class="modal">
-        <h2>Letter Details</h2>
-        <p><strong>Author:</strong> <span id="modal-author"></span></p>
-        <p><strong>Content:</strong></p>
-        <p id="modal-content"></p>
-        <button onclick="closeModal()">Close</button>
-    </div>
 
     {% if restricted %}
         <p>You are not authorized to view the letters for this tree.</p>
     {% else %}
+        <h1>Tree: {{ tree.tree_name }}</h1>
+        
+        <div id="tree-container">
+            <!-- 트리 이미지 위에 * 마커 표시 -->
+            {% for ornament in ornaments %}
+                <div class="ornament" style="top: {{ ornament.position_y }}px; left: {{ ornament.position_x }}px;" 
+                    data-author="{{ ornament.letter.author_name }}" 
+                    data-content="{{ ornament.letter.content }}"></div>
+            {% endfor %}
+        </div>
+
+        <div id="modal-overlay" class="modal-overlay"></div>
+        <div id="modal" class="modal">
+            <h2>Letter Details</h2>
+            <p><strong>Author:</strong> <span id="modal-author"></span></p>
+            <p><strong>Content:</strong></p>
+            <p id="modal-content"></p>
+            <button onclick="closeModal()">Close</button>
+        </div>
         <h2>Letters</h2>
         <ul>
             {% for letter in letters %}

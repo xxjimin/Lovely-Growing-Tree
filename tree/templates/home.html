@@ -8,30 +8,44 @@
 <body>
     <h1>Welcome to the Tree App!</h1>
 
-    <!-- 로그인 폼 추가 -->
-    <h2>Login</h2>
-    <form action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" required>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required>
-        <button type="submit">Login</button>
-    </form>
+    {% if request.session.user_id %}
+        <!-- 로그인한 사용자에게 환영 메시지 표시 -->
+        <h2>{{ request.session.username }}님, 환영합니다!</h2>
 
-    <!-- 회원가입 폼 -->
-    <h2>Register</h2>
-    <form action="{% url 'home' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="type" value="register">
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" required>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required>
-        <button type="submit">Register</button>
-    </form>
+        <!-- 나의 트리 보러가기 버튼 -->
+        <h3><a href="{% url 'tree_detail' tree_id=request.session.tree_id %}">나의 트리 보러가기</a></h3>
 
-    <!-- 사용자 검색 -->
+        <!-- 로그아웃 폼 -->
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    {% else %}
+        <!-- 로그인 폼 -->
+        <h2>Login</h2>
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <!-- 회원가입 폼 -->
+        <h2>Register</h2>
+        <form action="{% url 'home' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="type" value="register">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+            <button type="submit">Register</button>
+        </form>
+    {% endif %}
+
+    <!-- 사용자 검색 폼 (로그인 여부와 관계없이 항상 표시) -->
     <h2>Search User</h2>
     <form action="{% url 'home' %}" method="post">
         {% csrf_token %}

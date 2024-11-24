@@ -4,6 +4,11 @@ from .models import User, Tree, Letter, Ornament
 
 
 # 홈 페이지 - 회원가입 및 검색
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import User, Tree
+
+# 홈 페이지 - 회원가입 및 검색
 def home(request):
     if request.method == "POST":
         if request.POST.get('type') == 'register':
@@ -35,9 +40,20 @@ def home(request):
                 messages.error(request, "The user does not have a tree.")
                 return redirect('home')
 
+    # 로그인된 사용자 정보 처리
+    if request.session.get("user_id"):
+        user = User.objects.get(user_id=request.session.get("user_id"))
+        # 트리가 있다면 트리 ID를 세션에 저장
+        try:
+            tree = Tree.objects.get(user=user)
+            request.session["tree_id"] = tree.tree_id
+        except Tree.DoesNotExist:
+            pass
+
     return render(request, "home.html")
 
 
+# 로그인 페이지
 # 로그인 페이지
 def login(request):
     if request.method == "POST":
@@ -48,6 +64,7 @@ def login(request):
         try:
             user = User.objects.get(username=username, password=password)
             request.session["user_id"] = user.user_id
+            request.session["username"] = user.username  # 사용자 이름을 세션에 저장
             messages.success(request, "Login successful!")
 
             # 로그인 후 해당 사용자의 트리로 리다이렉트
@@ -62,6 +79,7 @@ def login(request):
             return redirect('create_tree', user_id=user.user_id)
 
     return render(request, "login.html")
+
 
 
 
@@ -191,4 +209,11 @@ def tree_detail(request, tree_id):
         'tree_image_url': tree_image_url,
         'ornaments': ornaments,  # 장식 정보 (편지 마커 위치) 추가
     })
+    
+    # 로그아웃
+def logout(request):
+    request.session.flush()  # 세션 삭제
+    messages.success(request, "Logged out successfully!")
+    return redirect('home')
+
 
