@@ -2,18 +2,19 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import User, Tree, Letter
 
+
 # 홈 페이지 - 회원가입 및 검색
 def home(request):
     if request.method == "POST":
         if request.POST.get('type') == 'register':
             username = request.POST["username"]
             password = request.POST["password"]
-            
+
             # 사용자 중복 확인
             if User.objects.filter(username=username).exists():
                 messages.error(request, "Username already exists.")
                 return redirect('home')
-            
+
             # 사용자 등록 및 세션에 사용자 ID 저장
             user = User.objects.create(username=username, password=password)
             request.session["user_id"] = user.user_id
@@ -37,8 +38,68 @@ def home(request):
     return render(request, "home.html")
 
 
+# 로그인 페이지
+def login(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        
+        # 사용자 확인
+        try:
+            user = User.objects.get(username=username, password=password)
+            request.session["user_id"] = user.user_id
+            messages.success(request, "Login successful!")
+
+            # 로그인 후 해당 사용자의 트리로 리다이렉트
+            user_tree = Tree.objects.get(user=user)
+            return redirect('tree_detail', tree_id=user_tree.tree_id)
+
+        except User.DoesNotExist:
+            messages.error(request, "Invalid username or password.")
+            return redirect('login')
+        except Tree.DoesNotExist:
+            messages.error(request, "User does not have a tree.")
+            return redirect('create_tree', user_id=user.user_id)
+
+    return render(request, "login.html")
+
+
+
+
+# 로그아웃
+def logout(request):
+    request.session.flush()
+    messages.success(request, "Logged out successfully!")
+    return redirect('home')
+
+
+# 회원가입 페이지
+def register(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists.")
+            return redirect('register')
+
+        user = User.objects.create(username=username, password=password)
+
+        # 세션에 사용자 ID 저장
+        request.session["user_id"] = user.user_id
+
+        messages.success(request, "User registered successfully!")
+        return redirect('create_tree', user_id=user.user_id)
+
+    return render(request, "register.html")
+
+
 # 트리 목록 보기
 def tree_list(request):
+    if not request.session.get("user_id"):
+        messages.error(request, "You must be logged in to view trees.")
+        return redirect('login')
+
     trees = Tree.objects.all()
     return render(request, 'tree/tree_list.html', {'trees': trees})
 
@@ -48,20 +109,24 @@ def create_tree(request, user_id):
     if request.method == "POST":
         tree_name = request.POST["tree_name"]
         user = User.objects.get(user_id=user_id)
-        
+
         # 트리 생성
-        Tree.objects.create(tree_name=tree_name, user=user)
+        tree = Tree.objects.create(tree_name=tree_name, user=user)
         messages.success(request, "Tree created successfully!")
-        return redirect("tree_list")
-    
+
+        # 생성한 트리 상세 페이지로 리다이렉트
+        return redirect('tree_detail', tree_id=tree.tree_id)
+
     return render(request, "create_tree.html")
+
 
 
 # 트리 상세 보기 및 편지 작성
 def tree_detail(request, tree_id):
-    tree = Tree.objects.get(tree_id=tree_id)
+    tree = get_object_or_404(Tree, tree_id=tree_id)
     letters = Letter.objects.filter(tree=tree)
 
+    # 편지 작성은 로그인 필요 없음
     if request.method == "POST":
         author_name = request.POST.get("author_name")
         content = request.POST.get("content")
@@ -75,45 +140,11 @@ def tree_detail(request, tree_id):
         messages.success(request, "Letter added successfully!")
         return redirect('tree_detail', tree_id=tree_id)
 
-    return render(request, "tree/tree_detail.html", {'tree': tree, 'letters': letters})
+    # 트리 소유자만 상세 내용 접근 가능
+    logged_in_user_id = request.session.get("user_id")
+    if logged_in_user_id != tree.user.user_id:
+        # 트리 내용 숨기고 편지 작성 폼만 렌더링
+        return render(request, "tree/tree_detail.html", {'tree': tree, 'letters': None, 'restricted': True})
 
-
-# 편지 작성 페이지
-def write_letter(request, tree_id):
-    tree = Tree.objects.get(tree_id=tree_id)
-    
-    if request.method == "POST":
-        content = request.POST["content"]
-        author_name = request.POST["author_name"]  # author_name을 폼에서 받기
-        
-        if not content or not author_name:
-            messages.error(request, "Content and author name cannot be empty.")
-            return redirect('write_letter', tree_id=tree_id)
-        
-        # 편지 작성
-        Letter.objects.create(content=content, author_name=author_name, tree=tree)
-        messages.success(request, "편지가 성공적으로 작성되었습니다.")
-        return redirect("tree_detail", tree_id=tree_id)
-
-    return render(request, "write_letter.html", {"tree": tree})
-
-
-# 회원가입 페이지
-def register(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
-        
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already exists.")
-            return redirect('register')
-        
-        user = User.objects.create(username=username, password=password)
-        
-        # 세션에 사용자 ID 저장
-        request.session["user_id"] = user.user_id
-
-        messages.success(request, "User registered successfully!")
-        return redirect('create_tree', user_id=user.user_id)
-
-    return render(request, "register.html")
+    # 트리 내용과 편지 목록 보여줌
+    return render(request, "tree/tree_detail.html", {'tree': tree, 'letters': letters, 'restricted': False})

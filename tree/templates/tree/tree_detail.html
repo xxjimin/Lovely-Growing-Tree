@@ -1,39 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Tree Detail</title>
+    <title>{{ tree.tree_name }}</title>
 </head>
 <body>
     <h1>Tree: {{ tree.tree_name }}</h1>
 
-    <h2>Letters</h2>
-    {% if letters %}
+    {% if restricted %}
+        <p>You are not authorized to view the letters for this tree.</p>
+    {% else %}
+        <h2>Letters</h2>
         <ul>
             {% for letter in letters %}
                 <li>
-                    <strong>From:</strong> {{ letter.author_name }}<br>
-                    <strong>Message:</strong> {{ letter.content }}
+                    <strong>{{ letter.author_name }}</strong>: {{ letter.content }}
                 </li>
             {% endfor %}
         </ul>
-    {% else %}
-        <p>No letters yet.</p>
     {% endif %}
 
     <h2>Write a Letter</h2>
     <form method="POST">
         {% csrf_token %}
-        <label for="author_name">Your Name:</label><br>
-        <input type="text" id="author_name" name="author_name" required><br>
-
-        <label for="content">Your Letter:</label><br>
-        <textarea id="content" name="content" rows="4" required></textarea><br>
-
-        <button type="submit">Send Letter</button>
+        <label for="author_name">Your Name:</label>
+        <input type="text" name="author_name" id="author_name" required>
+        <br>
+        <label for="content">Content:</label>
+        <textarea name="content" id="content" required></textarea>
+        <br>
+        <button type="submit">Submit Letter</button>
     </form>
 
-    <br>
-    <a href="{% url 'tree_list' %}">Back to Tree List</a>
+    <p><a href="{% url 'home' %}">Go Back to Home</a></p>
 </body>
 </html>

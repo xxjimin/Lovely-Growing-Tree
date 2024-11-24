@@ -1,17 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tree List</title>
 </head>
 <body>
-    <h1>트리 목록</h1>
+    <h1>Tree List</h1>
     <ul>
         {% for tree in trees %}
-            <li>{{ tree.tree_name }}</li>
-        {% empty %}
-            <li>트리가 없습니다.</li>
+            <li><a href="{% url 'tree_detail' tree_id=tree.tree_id %}">{{ tree.tree_name }}</a></li>
         {% endfor %}
     </ul>
 </body>

@@ -1,49 +1,44 @@
-<!-- templates/home.html -->
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>홈 페이지</title>
 </head>
 <body>
-    <h1>Welcome to Lovely Growing Tree</h1>
+    <h1>Welcome to the Tree App!</h1>
 
-    <!-- 사용자 등록 폼 -->
+    <!-- 로그인 폼 추가 -->
+    <h2>Login</h2>
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <!-- 회원가입 폼 -->
     <h2>Register</h2>
-    <form method="POST">
+    <form action="{% url 'home' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="type" value="register">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
+        <input type="text" name="username" id="username" required>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
+        <input type="password" name="password" id="password" required>
         <button type="submit">Register</button>
     </form>
 
-    <hr>
-
-    <!-- 사용자 검색 폼 -->
+    <!-- 사용자 검색 -->
     <h2>Search User</h2>
-    <form method="POST">
+    <form action="{% url 'home' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="type" value="search">
-        <label for="search_username">Search by Username:</label>
-        <input type="text" id="search_username" name="search_username" required>
-        <br>
+        <label for="search_username">Username:</label>
+        <input type="text" name="search_username" id="search_username" required>
         <button type="submit">Search</button>
     </form>
-
-    <!-- 메시지 표시 -->
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
 </body>
 </html>
