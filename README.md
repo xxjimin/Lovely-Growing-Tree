@@ -1,4 +1,4 @@
-<p align="center"> <img src="https://img.icons8.com/color/96/tree.png" alt="Lovely Growing Tree Logo" /> </p> <h1 align="center">Lovely Growing Tree 🌳</h1> <p align="center"> 🌟 A delightful project where users grow and decorate their unique trees with heartfelt letters. 🌟 </p>
+<p align="center"> </p> <h1 align="center">Lovely Growing Tree 🌳</h1> <p align="center"> 🌟 A delightful project where users grow and decorate their unique trees with heartfelt letters. 🌟 </p>
 🌟 Introduction
 Lovely Growing Tree is a web-based platform that allows users to:
 
