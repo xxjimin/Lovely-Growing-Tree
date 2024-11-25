@@ -23,6 +23,7 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
+            position: relative;
         }
 
         h1 {
@@ -185,6 +186,27 @@
         .modal button:hover {
             background-color: #c01010;
         }
+
+        /* 눈 내리는 효과 */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            100% {
+                transform: translateY(100vh) translateX(30px);
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -230,6 +252,29 @@
     <a href="{% url 'home' %}">Go Back to Home</a>
 
     <script>
+        // 눈 내리는 함수
+        const createSnowflake = () => {
+            const snowflake = document.createElement("div");
+            snowflake.className = "snowflake";
+
+            // 랜덤 위치와 속성 설정
+            snowflake.style.left = Math.random() * window.innerWidth + "px";
+            snowflake.style.animationDuration = Math.random() * 5 + 5 + "s";
+            snowflake.style.opacity = Math.random() * 0.5 + 0.3;
+            snowflake.style.width = snowflake.style.height = Math.random() * 8 + 4 + "px";
+
+            document.body.appendChild(snowflake);
+
+            // 눈 결정이 화면 밖으로 사라지면 삭제
+            snowflake.addEventListener("animationend", () => {
+                snowflake.remove();
+            });
+        };
+
+        // 일정 간격으로 눈 생성
+        setInterval(createSnowflake, 150);
+
+        // 모달 관련 코드
         const ornaments = document.querySelectorAll('.ornament');
         const modal = document.getElementById('modal');
         const modalOverlay = document.getElementById('modal-overlay');
@@ -253,8 +298,6 @@
             modal.classList.remove('active');
             modalOverlay.classList.remove('active');
         }
-
-        modalOverlay.addEventListener('click', closeModal);
     </script>
 </body>
 </html>

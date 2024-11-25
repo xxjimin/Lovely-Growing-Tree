@@ -86,6 +86,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
+
+
 # Localization settings
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
