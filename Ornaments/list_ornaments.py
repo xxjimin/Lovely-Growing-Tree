@@ -11,8 +11,8 @@ def list_trees_by_username(username):
         with connection.cursor() as cursor:
             sql = """
             SELECT t.tree_id, t.tree_name
-            FROM Trees t
-            JOIN Users u ON t.user_id = u.user_id
+            FROM tree_tree t
+            JOIN tree_user u ON t.user_id = u.user_id
             WHERE u.username = %s
             """
             cursor.execute(sql, (username,))
@@ -40,8 +40,8 @@ def list_ornaments_by_tree_id(tree_id):
         with connection.cursor() as cursor:
             sql = """
             SELECT o.ornament_id, o.position_x, o.position_y, l.content AS letter_content
-            FROM Ornaments o
-            JOIN Letters l ON o.letter_id = l.letter_id
+            FROM tree_ornament o
+            JOIN tree_letter l ON o.letter_id = l.letter_id
             WHERE o.tree_id = %s
             """
             cursor.execute(sql, (tree_id,))

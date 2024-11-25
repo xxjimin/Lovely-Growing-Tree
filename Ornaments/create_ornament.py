@@ -11,8 +11,8 @@ def list_trees_by_username(username):
         with connection.cursor() as cursor:
             sql = """
             SELECT t.tree_id, t.tree_name
-            FROM Trees t
-            JOIN Users u ON t.user_id = u.user_id
+            FROM tree_tree t
+            JOIN tree_user u ON t.user_id = u.user_id
             WHERE u.username = %s
             """
             cursor.execute(sql, (username,))
@@ -38,7 +38,7 @@ def list_letters_by_tree_id(tree_id):
     connection = get_connection()
     try:
         with connection.cursor() as cursor:
-            sql = "SELECT letter_id, content, author_name FROM Letters WHERE tree_id = %s"
+            sql = "SELECT letter_id, content, author_name FROM tree_letter WHERE tree_id = %s"
             cursor.execute(sql, (tree_id,))
             letters = cursor.fetchall()
 
@@ -62,7 +62,7 @@ def create_ornament(tree_id, letter_id, position_x, position_y):
     connection = get_connection()
     try:
         with connection.cursor() as cursor:
-            sql = "INSERT INTO Ornaments (tree_id, letter_id, position_x, position_y) VALUES (%s, %s, %s, %s)"
+            sql = "INSERT INTO tree_ornament (tree_id, letter_id, position_x, position_y) VALUES (%s, %s, %s, %s)"
             cursor.execute(sql, (tree_id, letter_id, position_x, position_y))
             connection.commit()
             print(f"Ornament has been added to Tree ID {tree_id} at position ({position_x}, {position_y})!")
